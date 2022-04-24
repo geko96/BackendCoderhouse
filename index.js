@@ -17,7 +17,7 @@ class libro {
     }
 }
 
-const mascotas = ["perro","gato","canario"]
+let mascotas = ["perro","gato","canario"]
 
 
 let books = [
@@ -86,6 +86,7 @@ function getBookNames () {
 }
 
 getBookNames();
+
 
 
 
