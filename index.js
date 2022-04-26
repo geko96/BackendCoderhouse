@@ -25,7 +25,10 @@ class Usuario {
     }
     
     addBook (nombre,editorial) {
-        let newBook = [nombre,editorial]
+        let newBook = {
+            name: nombre,
+            edit: editorial
+        }
         this.libros.push(newBook)
     }
 
@@ -33,7 +36,7 @@ class Usuario {
         let localbook = this.libros
 
         for (var i = 0; i < localbook.lengt; i++){
-            return localbook[i].map(x => x.libros)
+            return localbook[i].map(x => x.name)
         }
         
         return JSON.stringify(localbook)
@@ -44,9 +47,6 @@ class Usuario {
 
 
 }
-
-let firstanimal = ["perro"]
-
 
 
 const alberto = new Usuario("alberto","juarez",[],"perro")
