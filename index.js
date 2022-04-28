@@ -25,21 +25,19 @@ class Usuario {
     }
     
     addBook (nombre,editorial) {
-        let newBook = {
-            name: nombre,
-            edit: editorial
+        const boke = {
+            nombre,
+            editorial
         }
-        this.libros.push(newBook)
+    
+        this.libros.push(boke)
     }
 
     getBookNames () {
-        let localbook = this.libros
-
-        for (var i = 0; i < localbook.lengt; i++){
-            return localbook[i].map(x => x.name)
+        for (let i = 0; i < this.libros.length; i++){
+            return this.libros.map(x => x.nombre)
         }
         
-        return JSON.stringify(localbook)
     }
 
 
