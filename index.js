@@ -1,4 +1,6 @@
 /* Requeriemiento de la entrega semanal */
+const fs = require('fs')
+let archivo = './datos.txt'
 
 
 
@@ -61,6 +63,28 @@ console.log(alberto.countMascotas())
 console.log(" ")
 console.log(alberto.getBookNames())
 
+
+
+class guardar {
+
+    constructor (elemento, id) {
+        this.elemento = elemento,
+        this.id = id
+    }
+
+    save (obj) {
+        fs.writeFileSync(archivo,obj)
+        fs.writeFileSync(archivo,'\n')
+        data = fs.readFileSync(archivo, 'utf-8')
+        let element = data.map( x => x.obj)
+        
+    }
+
+
+
+
+
+}
 
 
 

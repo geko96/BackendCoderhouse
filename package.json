@@ -1,0 +1,19 @@
+{
+  "name": "backendcoderhouse",
+  "version": "1.0.0",
+  "description": "BackEndCoderHouse",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geko96/BackendCoderhouse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geko96/BackendCoderhouse/issues"
+  },
+  "homepage": "https://github.com/geko96/BackendCoderhouse#readme"
+}
