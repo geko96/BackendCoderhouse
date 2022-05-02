@@ -88,6 +88,12 @@ class Contenedor {
         console.log('')
         }catch {}
     }
+
+    deleteAll () {
+        try {
+            fs.writeFileSync(this.location,'')
+        }catch {}
+    }
 }
 
 let contenedor1 = new Contenedor(file)
@@ -95,4 +101,4 @@ console.log(contenedor1.save('chau'))
 contenedor1.getById(3);
 contenedor1.getAll();
 contenedor1.deleteById(1)
-
+//contenedor1.deleteAll()
