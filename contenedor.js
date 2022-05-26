@@ -5,10 +5,28 @@ let file = './datos.txt'
 let id= 0
 const express = require('express')
 const app = express()
-const PORT = 8081
+const PORT = 8080
 
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
+
+app.set('views','./views')
+app.set('view engine','hbs')
+
+var path = require('path');
+
+const { engine } = require('express-handlebars')
+
+const engineFN = engine({
+    extname: '.hbs',
+    defaultLayout: `${__dirname}/views/index.hbs`,
+    layoutsDir: `${__dirname}/views/layouts`,
+    partialsDir: `${__dirname}/views/partials`
+})
+
+app.engine('hbs',engineFN)
+
+
 
 
 
@@ -124,12 +142,10 @@ let contenedor1 = new Contenedor(file)
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
-  }
+}
 
-app.get('/', (req,res) => {
-    
-    return res.send('Pagina de inicio')
-})
+
+
 
 app.get('/api/productos', (req,res) => {
     return res.send(contenedor1.getAll())
@@ -160,6 +176,34 @@ app.delete('/api/productos/:id',(req,res) => {
     contenedor1.deleteById(item)
     res.status(204).json('Archivo eliminado')
 })
+
+
+
+//////////////////////////Plantillas
+
+app.get('/', (req,res) => {
+    const datos = contenedor1.getAll()
+    const data = {
+        Titulo:'Sitio Con HandlerBars',
+        mensaje: datos
+    }
+
+    return res.render('layouts/main',data)
+})
+
+app.post('/productos', (req,res) => {
+    contenedor1.save(req.body)
+    const data = {
+        Titulo:'Sitio Con Pug',
+        id:"ID" + contenedor1.getLastId(),
+        mensaje:JSON.stringify(req.body)
+    }
+    
+    return res.render('productos.pug',data)
+})
+
+app.use('/', express.static('./public'))
+
 
 const server = app.listen(PORT, () => {
     console.log(`Server iniciado en el puerto ${PORT}`)

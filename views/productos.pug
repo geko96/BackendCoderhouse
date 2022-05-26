@@ -1,0 +1,21 @@
+html
+    head 
+        title=Titulo
+        link(rel="stylesheet", href="http://localhost:8080/src/main.css")
+    body 
+        h1(class="header")= Titulo
+        div(class='container')
+            div(class="estatico")
+                form(action="http://localhost:8080/productos", method="post") 
+                    h2='Datos'
+                    
+                    p 
+                        input(type="text",name="Data")
+                    p 
+                        input(type="submit", value="Enviar")   
+            
+            div(class="Resultado")
+                h2=id
+                h2=mensaje
+                
+        
