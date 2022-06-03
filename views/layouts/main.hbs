@@ -1,7 +1,43 @@
 {{> header}}
 
 
-<h1 class="header">{{Titulo}}</h1><div class="container"><div class="estatico"><form action="http://localhost:8080/productos" method="post"> <h2>Datos</h2><p> <input type="text" name="Data"/></p><p> <input type="submit" value="Enviar"/></p></form></div><div class="Resultado"><h2>{{id}}</h2><h2>{{Resultado}}</h2></div></div>
+<h1 class="header">{{Titulo}}</h1>
+
+<div class="container">
+    <div class="estatico">
+        <h2>Datos</h2>
+        <p> <input type="text" name="Data"/></p>
+    
+        <p> <input type="submit" id="send" value="Cargar"/></p>
+    </div>
+
+    <div class="Tabla">
+        <table class="Resultado">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody class="tableBody" >
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="Chat Resultado">
+        <table>
+            <tr><th>Usuarios</th><th>Mensajes</th></tr>
+
+
+        </table>
+
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/index.js"></script>
+</div>
 
 
 

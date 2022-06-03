@@ -1,20 +1,23 @@
-const { Console } = require('console')
-const { randomUUID, randomBytes } = require('crypto')
-const fs = require('fs')
-let file = './datos.txt'
-let id= 0
-const express = require('express')
-const app = express()
+
 const PORT = 8080
 
-app.use(express.json())
-app.use(express.urlencoded({ extended:true }))
+const express = require('express');
+const app = express();
+const server = app.listen(PORT, () => {
+    console.log("Server iniciado en puerto: " + PORT);
+});
+const io = require('socket.io')(server);
+
+let users = []
+
+
+const file = './datos.txt'
+const fs = require('fs')
+
+
 
 app.set('views','./views')
 app.set('view engine','hbs')
-
-var path = require('path');
-
 const { engine } = require('express-handlebars')
 
 const engineFN = engine({
@@ -26,6 +29,22 @@ const engineFN = engine({
 
 app.engine('hbs',engineFN)
 
+app.use(express.json())
+app.use(express.urlencoded({ extended:true }))
+
+
+app.get('/', (req,res) => {
+    let data = {
+        Titulo:'Sitio Con HandleBars'
+    }
+    return res.render('layouts/main.hbs',data)
+})
+
+app.use('/', express.static('./public'))
+
+io.on('connection', socket => {
+    console.log('Nuevo usuario conectado')
+})
 
 
 
@@ -134,81 +153,3 @@ class Contenedor {
 }
 
 let contenedor1 = new Contenedor(file)
-
-
-
-
-////////////////////////////////////Server Express////////////////////////////
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
-
-
-
-app.get('/api/productos', (req,res) => {
-    return res.send(contenedor1.getAll())
-})
-
-app.get('/api/productos/:id', (req,res) => {
-    const id = (req.params.id)
-    return res.send(contenedor1.getById(id))
-})
-
-app.post('/api/productos', (req,res) => {
-    let newData = req.body
-    let arreglo = contenedor1.save(newData)
-    let UltimoId = contenedor1.getLastId();
-    res.json(UltimoId)
-})
-
-app.put('/api/productos/:id', (req,res) => {
-    const id = (req.params.id)
-    const data = req.body.data
-
-    return res.send(contenedor1.refresh(id,data))
-})
-
-app.delete('/api/productos/:id',(req,res) => {
-    let item = req.params.id
-    console.log('item eliminado '+ item)
-    contenedor1.deleteById(item)
-    res.status(204).json('Archivo eliminado')
-})
-
-
-
-//////////////////////////Plantillas
-
-app.get('/', (req,res) => {
-    const datos = contenedor1.getAll()
-    const data = {
-        Titulo:'Sitio Con HandleBars',
-        mensaje: datos
-    }
-
-    return res.render('layouts/main',data)
-})
-
-app.post('/productos', (req,res) => {
-    contenedor1.save(req.body)
-    const data = {
-        Titulo:'Sitio Con Pug',
-        id:"ID" + contenedor1.getLastId(),
-        mensaje:JSON.stringify(req.body)
-    }
-    
-    return res.render('productos.pug',data)
-})
-
-app.get('/productos', (req,res) => {
-    return res.json(contenedor1.getAll())
-})
-
-app.use('/', express.static('./public'))
-
-
-const server = app.listen(PORT, () => {
-    console.log(`Server iniciado en el puerto ${PORT}`)
-})
