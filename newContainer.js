@@ -40,6 +40,7 @@ app.use('/', express.static('./public'))
 
 io.on('connection', socket => {
     console.log('Nuevo usuario conectado')
+    
 })
 
 
