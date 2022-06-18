@@ -48,7 +48,7 @@ app.use('/', express.static('./public'))
 
 io.on('connection', socket => {
     console.log('Nuevo usuario conectado')
-    
+    socket.emit('catalogo',products.getAll())
 
 
     socket.on('sendProduct', data => {
@@ -93,30 +93,35 @@ class container {
     }
 
     save (data) {
-        this.db(`${this.tableIn}`).insert(data).finally(() => {console.log('ok')})
+        this.db(`${this.tableIn}`).insert(data).finally(() => {this.db.destroy()})
         
         
         
     }
 
     delete (id) {
-        this.db(`${this.tableIn}`).where('id',id).del()
+        this.db(`${this.tableIn}`).where('id',id).del().finally(() => {console.log('ok')})
     }
 
     update (id,data) {
-        this.db(`${this.tableIn}`).where('id',id).update(data)
+        this.db(`${this.tableIn}`).where('id',id).update(data).finally(() => {console.log('ok')})
     }
 
     getById (id) {
-        return this.db(`${this.tableIn}`).where('id',id).first()
+        return this.db(`${this.tableIn}`).where('id',id).first().finally(() => {console.log('ok')})
     }
 
     getAll () {
-        return this.db(`${this.tableIn}`).select()
+        let data = this.db(`${this.tableIn}`).select().finally(() => {console.log('getAll ok')})
+        data.then(data => {
+            console.log(data)
+            return data
+        })
+       
     }
 
     deleteAll () {
-        this.db(`${this.tableIn}`).del()
+        this.db(`${this.tableIn}`).del().finally(() => {console.log('ok')})
     }
 }	
 
