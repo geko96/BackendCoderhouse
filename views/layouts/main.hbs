@@ -6,7 +6,9 @@
 <div class="container">
     <div class="estatico">
         <h2>Datos</h2>
-        <p> <input type="text" name="Data"/></p>
+        <p> <input type="text" id="name"/ placeholder="Nombre de producto"></p>
+        <p> <input type="number" id="price" placeholder="Precio"/></p>
+        <p> <input type="number" id="stock" placeholder="stock"/></p>
     
         <p> <input type="submit" id="send" value="Cargar"/></p>
     </div>
@@ -19,22 +21,30 @@
                     <th>Data</th>
                 </tr>
             </thead>
-            <tbody class="tableBody" >
+            <tbody class="tableBody" id="tableBody" >
 
             </tbody>
         </table>
     </div>
 
     <div class="Chat Resultado">
-        <table>
-            <tr><th>Usuarios</th><th>Mensajes</th></tr>
-
-
-        </table>
+        <h2>Chat</h2>
+        <div class="chat">
+            <div class="chat-container">
+                <div class="chat-container-header">
+                    <div class="chat-container-header-title">
+                        <h3>Chat</h3>
+                    </div>
+                    <div class="chat-container-header-close">
+                        <button class="btn btn-danger">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/index.js"></script>
 </div>

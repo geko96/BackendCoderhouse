@@ -1,5 +1,3 @@
-import { optionsMysql } from './db/options';
-import { optionsSqlite } from './db/options';
 
 const PORT = 8080
 
@@ -31,9 +29,19 @@ app.use(express.urlencoded({ extended:true }))
 
 app.get('/', (req,res) => {
     let data = {
-        Titulo:'Sitio Con HandleBars'
+        Titulo:'Sitio Con Mysql y Sqlite3'
     }
     return res.render('layouts/main.hbs',data)
+})
+
+app.post('/api/productos', (req,res) => {
+    let data = req.body
+    console.log(req.params)
+    console.log(data)
+    products.save(data)
+    io.emit('catalogo',products.getAll())
+    
+    return res.send('ok')
 })
 
 app.use('/', express.static('./public'))
@@ -41,11 +49,38 @@ app.use('/', express.static('./public'))
 io.on('connection', socket => {
     console.log('Nuevo usuario conectado')
     
+
+
+    socket.on('sendProduct', data => {
+        console.log(data)
+        products.save(data)
+        
+    })
 })
 
 
-/// knex
 
+
+
+
+/// knex
+const optionsMysql = {
+    client: 'mysql',
+    connection: {
+      host : '127.0.0.1',
+      port : 3306,
+      user : 'root',
+      password : '',
+      database : 'web'
+    }
+}
+
+const optionsSqlite = {
+    client: 'sqlite3', // or 'better-sqlite3'
+    connection: {
+      filename: "./db/ecomerce.sqlite"
+    }
+}
 
 
 /// Contenedor 
@@ -58,39 +93,34 @@ class container {
     }
 
     save (data) {
-        this.db.schema.createTable(`${tableIn}`, (table) => {
-            table.increments('id')
-            table.string('name')
-            table.float('price')
-            table.integer('Stock')
-          })
-          .then(() => {
-            this.db(`${tableIn}`).insert(data)
-          })
+        this.db(`${this.tableIn}`).insert(data).finally(() => {console.log('ok')})
+        
+        
         
     }
 
     delete (id) {
-        this.db(`${tableIn}`).where('id',id).del()
+        this.db(`${this.tableIn}`).where('id',id).del()
     }
 
     update (id,data) {
-        this.db(`${tableIn}`).where('id',id).update(data)
+        this.db(`${this.tableIn}`).where('id',id).update(data)
     }
 
     getById (id) {
-        return this.db(`${tableIn}`).where('id',id).first()
+        return this.db(`${this.tableIn}`).where('id',id).first()
     }
 
     getAll () {
-        return this.db(`${tableIn}`).select()
+        return this.db(`${this.tableIn}`).select()
     }
 
     deleteAll () {
-        this.db(`${tableIn}`).del()
+        this.db(`${this.tableIn}`).del()
     }
 }	
 
 
 let products = new container(optionsMysql,'products')
 let chats = new container(optionsSqlite,'chats')
+
