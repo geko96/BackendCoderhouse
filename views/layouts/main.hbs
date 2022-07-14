@@ -4,21 +4,16 @@
 <h1 class="header">{{Titulo}}</h1>
 
 <div class="container">
-    <div class="estatico">
-        <h2>Datos</h2>
-        <p> <input type="text" id="name"/ placeholder="Nombre de producto"></p>
-        <p> <input type="number" id="price" placeholder="Precio"/></p>
-        <p> <input type="number" id="stock" placeholder="stock"/></p>
-    
-        <p> <input type="submit" id="send" value="Cargar"/></p>
-    </div>
-
+   
     <div class="Tabla">
         <table class="Resultado">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Data</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+
                 </tr>
             </thead>
             <tbody class="tableBody" id="tableBody" >
@@ -45,7 +40,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    
     <script src="/index.js"></script>
 </div>
 
