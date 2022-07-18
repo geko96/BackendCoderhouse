@@ -1,4 +1,5 @@
 var faker = require('faker');
+const normalizr = require('normalizr');
 const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -62,4 +63,39 @@ function GetRandom (number) {
 
     return ProdArray
     
+}
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Normalizr
+
+const avatarSchema = new normalizr.schema.Entity('avatar')
+const aliasSchema = new normalizr.schema.Entity('alias')
+const edadSchema = new normalizr.schema.Entity('edad')
+const apellidoSchema = new normalizr.schema.Entity('apellido')
+const nombreSchema = new normalizr.schema.Entity('nombre')
+const idSchema = new normalizr.schema.Entity('email')
+
+
+const authorSchema = new normalizr.schema.Entity('author', {
+    avatar: avatarSchema,
+    alias: aliasSchema,
+    edad: edadSchema,
+    apellido: apellidoSchema,
+    nombre: nombreSchema,
+    id: idSchema
+})
+
+const textSchema = new normalizr.schema.Entity('text')
+
+const messageSchema = new normalizr.schema.Entity('message', {
+    author: authorSchema,
+    text: textSchema
+})
+
+
+function NormalizeMessage (message) {
+    return normalizr.normalize(message, messageSchema)
 }
