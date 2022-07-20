@@ -1,8 +1,17 @@
 var faker = require('faker');
 const normalizr = require('normalizr');
-const express = require('express')
-const app = express()
 const PORT = process.env.PORT || 8080
+const express = require('express');
+const app = express();
+const server = app.listen(PORT, () => {
+    console.log("Server iniciado en puerto: " + PORT);
+});
+const io = require('socket.io')(server);
+
+const db = require('./db/db')
+const chatModel = require('./db/chatModel')
+
+
 
 app.set('views','./views')
 app.set('view engine','hbs')
@@ -35,14 +44,6 @@ app.get('/api/productos',(req,res) => {
 })
 
 
-
-const server = app.listen(PORT, () => {
-    console.log(`Server iniciado en el puerto ${PORT}`)
-})
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Contenedor de datos
 
@@ -64,6 +65,30 @@ function GetRandom (number) {
     return ProdArray
     
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Chat
+
+
+
+io.on('connection', socket => {
+    console.log('Nuevo usuario conectado')
+
+    socket.on('message', message => {
+        console.log(message)
+        db.then(db => {
+            let chat = NormalizeMessage(message)
+            chatModel.create(user, (err,user) => {
+                if(err) return res.send(err)
+                return res.send(user)
+            })
+        }).catch(err => console.log(err))
+    
+        
+        io.emit('message', message)
+    })
+})
 
 
 
